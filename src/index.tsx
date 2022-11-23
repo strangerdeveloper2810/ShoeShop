@@ -1,15 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Cart from "./pages/Carts/Cart";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import Register from "./pages/Register/Register";
+import Search from "./pages/Search/Search";
+
+import reportWebVitals from "./reportWebVitals";
+import HomeTemplate from "./templates/HomeTemplate";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="" element={<HomeTemplate/>}>
+          <Route index element={<Home/>}/>
+          <Route path="login" element={<Login/>}/>
+          <Route path="register" element={<Register/>}/>
+          <Route path="carts" element={<Cart/>}/>
+          <Route path="detail">
+            <Route path=":id"></Route>
+          </Route>
+          <Route path="profile" element={<Profile/>}/>
+          <Route path="search" element={<Search/>}/>
+          <Route path="*" element={<Navigate to=""/>}/>
+
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
