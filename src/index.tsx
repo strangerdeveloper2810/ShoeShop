@@ -7,9 +7,11 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
 import Search from "./pages/Search/Search";
-
 import reportWebVitals from "./reportWebVitals";
 import HomeTemplate from "./templates/HomeTemplate";
+
+// Style
+import "./assets/scss/style.scss"
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
