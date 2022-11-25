@@ -11,30 +11,34 @@ import reportWebVitals from "./reportWebVitals";
 import HomeTemplate from "./templates/HomeTemplate";
 
 // Style
-import "./assets/scss/style.scss"
+import "./assets/scss/style.scss";
+import { Provider } from "react-redux/es/exports";
+import { store } from "./redux/configStore";
+// Redux
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="" element={<HomeTemplate/>}>
-          <Route index element={<Home/>}/>
-          <Route path="login" element={<Login/>}/>
-          <Route path="register" element={<Register/>}/>
-          <Route path="carts" element={<Cart/>}/>
-          <Route path="detail">
-            <Route path=":id"></Route>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="" element={<HomeTemplate />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="carts" element={<Cart />} />
+            <Route path="detail">
+              <Route path=":id"></Route>
+            </Route>
+            <Route path="profile" element={<Profile />} />
+            <Route path="search" element={<Search />} />
+            <Route path="*" element={<Navigate to="" />} />
           </Route>
-          <Route path="profile" element={<Profile/>}/>
-          <Route path="search" element={<Search/>}/>
-          <Route path="*" element={<Navigate to=""/>}/>
-
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
