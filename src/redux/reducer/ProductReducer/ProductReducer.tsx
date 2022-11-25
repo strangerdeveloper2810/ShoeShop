@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { DispatchType } from "../../configStore";
 import { ProductModel } from "../../types/ProductType";
 export type ProductState = {
   arrProduct: ProductModel[];
@@ -29,9 +31,39 @@ const initialState: ProductState = {
 const ProductReducer = createSlice({
   name: "ProductReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    setArrProductAction: (
+      state: ProductState,
+      action: PayloadAction<ProductModel[]>
+    ) => {
+      state.arrProduct = action.payload;
+    },
+  },
 });
 
-export const {} = ProductReducer.actions;
+export const { setArrProductAction } = ProductReducer.actions;
 
 export default ProductReducer.reducer;
+
+/* ----------------- action api --------------------------- */
+
+export const getProductApi = () => {
+  return async (dispatch: DispatchType) => {
+    try {
+      const result = await axios({
+        url: `https://shop.cyberlearn.vn/api/Product`,
+        method: "GET",
+      });
+      const content: ProductModel[] = result.data.content;
+      
+      //   Sau khi lấy dữ liệu từ api về, chúng ta sẽ dispatch lên store
+      const action: PayloadAction<ProductModel[]> =
+        setArrProductAction(content);
+      dispatch(action);
+
+      console.log("content", content);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
