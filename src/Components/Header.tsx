@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 type Props = {};
 
-export default function Header({}: Props) {
+export default function Header(props: Props) {
   return (
     <div className="header">
       <section className="logo__header">

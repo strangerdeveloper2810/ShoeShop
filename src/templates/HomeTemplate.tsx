@@ -4,7 +4,7 @@ import Footer from '../Components/Footer'
 import Header from '../Components/Header'
 type Props = {}
 
-export default function HomeTemplate({}: Props) {
+export default function HomeTemplate(props: Props) {
   return (
     <div>
         <Header/>

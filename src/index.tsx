@@ -14,6 +14,7 @@ import HomeTemplate from "./templates/HomeTemplate";
 import "./assets/scss/style.scss";
 import { Provider } from "react-redux/es/exports";
 import { store } from "./redux/configStore";
+import Detail from "./pages/Detail/Detail";
 // Redux
 
 const root = ReactDOM.createRoot(
@@ -30,7 +31,7 @@ root.render(
             <Route path="register" element={<Register />} />
             <Route path="carts" element={<Cart />} />
             <Route path="detail">
-              <Route path=":id"></Route>
+              <Route path=":id" element={<Detail/>}></Route>
             </Route>
             <Route path="profile" element={<Profile />} />
             <Route path="search" element={<Search />} />

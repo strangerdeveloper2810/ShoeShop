@@ -4,6 +4,8 @@ type Props = {}
 
 export default function Detail(props: Props) {
   return (
-    <div>Detail</div>
+    <div className='container'>
+
+    </div>
   )
 }
