@@ -16,7 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 type Props = {
-  product: ProductModel;
+  product?: ProductModel;
 };
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -43,8 +43,12 @@ export default function ProductCard({ product }: Props) {
       <CardMedia
         component="img"
         height="194"
-        image={product.image}
-        alt="Paella dish"
+        image={
+          product?.image
+            ? product.image
+            : "https://shop.cyberlearn.vn/images/adidas-prophere.png"
+        }
+        alt={product?.name}
       />
 
       <CardContent>
@@ -53,7 +57,7 @@ export default function ProductCard({ product }: Props) {
           color="text.secondary"
           className="fw-semibold fs-5"
         >
-          {product.name}
+          {product?.name ? product.name : "Product 1"}
         </Typography>
       </CardContent>
 
@@ -63,7 +67,7 @@ export default function ProductCard({ product }: Props) {
         </IconButton>
         <IconButton aria-label="buy now">
           <NavLink
-            to={`/detail/${product.id}`}
+            to={`/detail/${product?.id ? product.id : "1"}` }
             className="btn btn-outline-primary"
           >
             <ShoppingCartIcon />
@@ -82,9 +86,9 @@ export default function ProductCard({ product }: Props) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph variant="h4" className="text-info">
-            Price: {product.price} $
+            Price: {product?.price ? product.price : "1000"} $
           </Typography>
-          <Typography paragraph>{product.description}</Typography>
+          <Typography paragraph>{product?.description ? product.description : "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement"}</Typography>
         </CardContent>
       </Collapse>
     </Card>

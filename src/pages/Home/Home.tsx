@@ -1,4 +1,6 @@
 import React,{useEffect} from "react";
+import Container from '@mui/material/Container';
+
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { DispatchType, RootState } from "../../redux/configStore";
@@ -25,8 +27,8 @@ export default function Home(props: Props) {
   
 
   return (
-    <div className="container">
-      <h3>Product Feature</h3>
+    <Container maxWidth="xl">
+        <h3>Product Feature</h3>
       <div className="row mb-2">
         {arrProduct.map((item: ProductModel, index: number) => {
           return (
@@ -36,6 +38,6 @@ export default function Home(props: Props) {
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 }
