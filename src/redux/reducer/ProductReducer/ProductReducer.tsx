@@ -60,8 +60,6 @@ export const getProductApi = () => {
       const action: PayloadAction<ProductModel[]> =
         setArrProductAction(content);
       dispatch(action);
-
-      console.log("content", content);
     } catch (error) {
       console.log(error);
     }
