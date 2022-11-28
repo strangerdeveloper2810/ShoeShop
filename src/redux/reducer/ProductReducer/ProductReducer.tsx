@@ -1,10 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { DispatchType } from "../../configStore";
 import { ProductModel } from "../../types/ProductType";
+import { ProductDetailModel } from "../../types/ProductDetailType";
 export type ProductState = {
   arrProduct: ProductModel[];
+  productDetail: ProductDetailModel | null;
 };
+
 const initialState: ProductState = {
   arrProduct: [
     {
@@ -26,6 +29,7 @@ const initialState: ProductState = {
       image: "https://shop.cyberlearn.vn/images/adidas-prophere.png",
     },
   ],
+  productDetail: null
 };
 
 const ProductReducer = createSlice({
@@ -38,6 +42,27 @@ const ProductReducer = createSlice({
     ) => {
       state.arrProduct = action.payload;
     },
+  },
+  // pending: đang xử lý,
+  // fulfilled: đã xử lý thành công
+  // reject: xử lý thất bại
+  extraReducers(builder) {
+    builder.addCase(
+      getProductDetailApi.pending,
+      (state: ProductState, action) => {}
+    );
+
+    builder.addCase(
+      getProductDetailApi.fulfilled,
+      (state: ProductState, action: PayloadAction<ProductDetailModel>) => {
+        state.productDetail = action.payload;
+      }
+    );
+
+    builder.addCase(
+      getProductDetailApi.rejected,
+      (state: ProductState, action) => {}
+    );
   },
 });
 
@@ -55,7 +80,7 @@ export const getProductApi = () => {
         method: "GET",
       });
       const content: ProductModel[] = result.data.content;
-      
+
       //   Sau khi lấy dữ liệu từ api về, chúng ta sẽ dispatch lên store
       const action: PayloadAction<ProductModel[]> =
         setArrProductAction(content);
@@ -65,3 +90,14 @@ export const getProductApi = () => {
     }
   };
 };
+
+export const getProductDetailApi = createAsyncThunk(
+  "ProductReducer/getProductDetailApi",
+  async (id: string) => {
+    const response = await axios({
+      url: `https://shop.cyberlearn.vn/api/Product/getbyid?id=${id}`,
+      method: "GET",
+    });
+    return response.data.content;
+  }
+);

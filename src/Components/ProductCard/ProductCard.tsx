@@ -14,9 +14,10 @@ import Typography from "@mui/material/Typography";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { RelatedProduct } from "../../redux/types/ProductDetailType";
 
 type Props = {
-  product?: ProductModel;
+  product?: ProductModel | RelatedProduct;
 };
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -67,7 +68,7 @@ export default function ProductCard({ product }: Props) {
         </IconButton>
         <IconButton aria-label="buy now">
           <NavLink
-            to={`/detail/${product?.id ? product.id : "1"}` }
+            to={`/detail/${product?.id ? product.id : "1"}`}
             className="btn btn-outline-primary"
           >
             <ShoppingCartIcon />
@@ -88,7 +89,11 @@ export default function ProductCard({ product }: Props) {
           <Typography paragraph variant="h4" className="text-info">
             Price: {product?.price ? product.price : "1000"} $
           </Typography>
-          <Typography paragraph>{product?.description ? product.description : "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement"}</Typography>
+          <Typography paragraph>
+            {product?.description
+              ? product.description
+              : "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement"}
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>
