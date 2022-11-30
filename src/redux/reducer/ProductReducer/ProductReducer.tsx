@@ -7,6 +7,7 @@ import { http } from "../../../util/config";
 export type ProductState = {
   arrProduct: ProductModel[];
   productDetail: ProductDetailModel | null;
+  isLoading: boolean,
 };
 
 const initialState: ProductState = {
@@ -30,6 +31,7 @@ const initialState: ProductState = {
       image: "https://shop.cyberlearn.vn/images/adidas-prophere.png",
     },
   ],
+
   productDetail: {
     id: 1,
     name: "Adidas Prophere",
@@ -98,6 +100,8 @@ const initialState: ProductState = {
       },
     ],
   },
+  isLoading: false
+  
 };
 
 const ProductReducer = createSlice({
@@ -115,23 +119,7 @@ const ProductReducer = createSlice({
   // fullfiled: đã xử lý thành công
   // reject: xử lý thất bại
   extraReducers(builder) {
-    builder.addCase(
-      getProductDetailApi.pending,
-      (state: ProductState, action) => {}
-    );
-
-    builder.addCase(
-      getProductDetailApi.fulfilled,
-      (state: ProductState, action: PayloadAction<ProductDetailModel>) => {
-        state.productDetail = action.payload;
-      }
-    );
-
-    builder.addCase(
-      getProductDetailApi.rejected,
-      (state: ProductState, action) => {}
-    );
-
+    // Get All Product
     builder.addCase(
       getAllProductApi.pending,
       (state: ProductState, action) => {}
@@ -148,6 +136,26 @@ const ProductReducer = createSlice({
       getAllProductApi.rejected,
       (state: ProductState, action) => {}
     );
+
+    builder.addCase(
+      getProductDetailApi.pending,
+      (state: ProductState, action) => {}
+    );
+
+    // Get Product Detail
+    builder.addCase(
+      getProductDetailApi.fulfilled,
+      (state: ProductState, action: PayloadAction<ProductDetailModel>) => {
+        state.productDetail = action.payload;
+      }
+    );
+
+    builder.addCase(
+      getProductDetailApi.rejected,
+      (state: ProductState, action) => {}
+    );
+
+    
   },
 });
 
