@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, unstable_HistoryRouter as HistoryBrowser } from "react-router-dom";
 import Cart from "./pages/Carts/Cart";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -9,12 +9,13 @@ import Register from "./pages/Register/Register";
 import Search from "./pages/Search/Search";
 import reportWebVitals from "./reportWebVitals";
 import HomeTemplate from "./templates/HomeTemplate";
-
+import Detail from "./pages/Detail/Detail";
 // Style
 import "./assets/scss/style.scss";
 import { Provider } from "react-redux/es/exports";
 import { store } from "./redux/configStore";
-import Detail from "./pages/Detail/Detail";
+import { history } from "./util/config";
+
 // Redux
 
 const root = ReactDOM.createRoot(
@@ -23,7 +24,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <HistoryBrowser history={history}>
         <Routes>
           <Route path="" element={<HomeTemplate />}>
             <Route index element={<Home />} />
@@ -38,7 +39,7 @@ root.render(
             <Route path="*" element={<Navigate to="" />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HistoryBrowser>
     </Provider>
   </React.StrictMode>
 );
