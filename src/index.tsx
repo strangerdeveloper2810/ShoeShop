@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Routes, Route, Navigate, unstable_HistoryRouter as HistoryBrowser } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  unstable_HistoryRouter as HistoryBrowser,
+} from "react-router-dom";
 import Cart from "./pages/Carts/Cart";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -15,6 +20,7 @@ import "./assets/scss/style.scss";
 import { Provider } from "react-redux/es/exports";
 import { store } from "./redux/configStore";
 import { history } from "./util/config";
+import Loading from "./Components/Loading/Loading";
 
 // Redux
 
@@ -25,6 +31,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <HistoryBrowser history={history}>
+        <Loading />
         <Routes>
           <Route path="" element={<HomeTemplate />}>
             <Route index element={<Home />} />
@@ -32,7 +39,7 @@ root.render(
             <Route path="register" element={<Register />} />
             <Route path="carts" element={<Cart />} />
             <Route path="detail">
-              <Route path=":id" element={<Detail/>}></Route>
+              <Route path=":id" element={<Detail />}></Route>
             </Route>
             <Route path="profile" element={<Profile />} />
             <Route path="search" element={<Search />} />
