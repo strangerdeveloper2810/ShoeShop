@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { DispatchType } from "../../configStore";
+// import axios from "axios";
+// import { DispatchType } from "../../configStore";
 import { ProductModel } from "../../types/ProductType";
 import { ProductDetailModel } from "../../types/ProductDetailType";
+import { http } from "../../../util/config";
 export type ProductState = {
   arrProduct: ProductModel[];
   productDetail: ProductDetailModel | null;
@@ -103,12 +104,12 @@ const ProductReducer = createSlice({
   name: "ProductReducer",
   initialState,
   reducers: {
-    setArrProductAction: (
-      state: ProductState,
-      action: PayloadAction<ProductModel[]>
-    ) => {
-      state.arrProduct = action.payload;
-    },
+    // setArrProductAction: (
+    //   state: ProductState,
+    //   action: PayloadAction<ProductModel[]>
+    // ) => {
+    //   state.arrProduct = action.payload;
+    // },  
   },
   // pending: đang xử lý,
   // fullfiled: đã xử lý thành công
@@ -130,41 +131,63 @@ const ProductReducer = createSlice({
       getProductDetailApi.rejected,
       (state: ProductState, action) => {}
     );
+
+    builder.addCase(
+      getAllProductApi.pending,
+      (state: ProductState, action) => {}
+    );
+
+    builder.addCase(
+      getAllProductApi.fulfilled,
+      (state: ProductState, action: PayloadAction<ProductModel[]>) => {
+        state.arrProduct = action.payload;
+      }
+    );
+
+    builder.addCase(
+      getAllProductApi.rejected,
+      (state: ProductState, action) => {}
+    );
   },
 });
 
-export const { setArrProductAction } = ProductReducer.actions;
+// export const { setArrProductAction } = ProductReducer.actions;
 
 export default ProductReducer.reducer;
 
-/* ----------------- action api --------------------------- */
+// /* ----------------- action api --------------------------- */
 
-export const getProductApi = () => {
-  return async (dispatch: DispatchType) => {
-    try {
-      const result = await axios({
-        url: `https://shop.cyberlearn.vn/api/Product`,
-        method: "GET",
-      });
-      const content: ProductModel[] = result.data.content;
+// export const getProductApi = () => {
+//   return async (dispatch: DispatchType) => {
+//     try {
+//       const result = await axios({
+//         url: `https://shop.cyberlearn.vn/api/Product`,
+//         method: "GET",
+//       });
+//       const content: ProductModel[] = result.data.content;
 
-      //   Sau khi lấy dữ liệu từ api về, chúng ta sẽ dispatch lên store
-      const action: PayloadAction<ProductModel[]> =
-        setArrProductAction(content);
-      dispatch(action);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+//       //   Sau khi lấy dữ liệu từ api về, chúng ta sẽ dispatch lên store
+//       const action: PayloadAction<ProductModel[]> =
+//         setArrProductAction(content);
+//       dispatch(action);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
+
+export const getAllProductApi = createAsyncThunk(
+  "ProductReducer/getAllProductApi",
+  async () => {
+    const result = await http.get(`/api/Product`);
+    return result.data.content;
+  }
+);
 
 export const getProductDetailApi = createAsyncThunk(
   "ProductReducer/getProductDetailApi",
   async (id: string) => {
-    const response = await axios({
-      url: `https://shop.cyberlearn.vn/api/Product/getbyid?id=${id}`,
-      method: "GET",
-    });
+    const response = await http.get(`/api/Product/getbyid?id=${id}`);
     return response.data.content;
   }
 );
