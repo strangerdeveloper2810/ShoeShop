@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,6 +16,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UserLoginModel } from "../../redux/types/UserLoginModel";
+import { loginAsyncApi } from "../../redux/reducer/UserReducer/UserReducer";
+import { DispatchType } from "../../redux/configStore";
 
 function Copyright(props: any) {
   return (
@@ -37,6 +40,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function Login() {
+  const dispatch: DispatchType = useDispatch();
   const frmLogin = useFormik<UserLoginModel>({
     initialValues: {
       email: "",
@@ -50,7 +54,8 @@ export default function Login() {
       password: yup.string().min(3, "Password must be at least 3 characters"),
     }),
     onSubmit: (values: UserLoginModel) => {
-      console.log("values", values);
+      const actionAsyncThunk = loginAsyncApi(values);
+      dispatch(actionAsyncThunk);
     },
   });
   return (
