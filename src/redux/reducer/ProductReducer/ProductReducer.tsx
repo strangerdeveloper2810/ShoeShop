@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductModel } from "../../types/ProductType";
 import { ProductDetailModel } from "../../types/ProductDetailType";
 import { http } from "../../../util/config";
+
 export type ProductState = {
   arrProduct: ProductModel[];
   productDetail: ProductDetailModel | null;
@@ -128,6 +129,7 @@ const ProductReducer = createSlice({
     builder.addCase(
       getAllProductApi.fulfilled,
       (state: ProductState, action: PayloadAction<ProductModel[]>) => {
+        
         state.arrProduct = action.payload;
       }
     );
