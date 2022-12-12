@@ -1,9 +1,12 @@
 .footer {
   background-color: rgb(235, 235, 235);
+  position: relative;
+  padding: 25px 0;
   .footer__menu {
     display: flex;
     justify-content: space-around;
     gap: 20px;
+    bottom: 100px;
     .footer__item {
       margin-top: 5px;
 
