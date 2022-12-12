@@ -4,10 +4,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductModel } from "../../types/ProductType";
 import { ProductDetailModel } from "../../types/ProductDetailType";
 import { http } from "../../../util/config";
+
 export type ProductState = {
   arrProduct: ProductModel[];
   productDetail: ProductDetailModel | null;
-  isLoading: boolean,
+  isLoading: boolean;
 };
 
 const initialState: ProductState = {
@@ -100,8 +101,7 @@ const initialState: ProductState = {
       },
     ],
   },
-  isLoading: false
-  
+  isLoading: false,
 };
 
 const ProductReducer = createSlice({
@@ -113,7 +113,7 @@ const ProductReducer = createSlice({
     //   action: PayloadAction<ProductModel[]>
     // ) => {
     //   state.arrProduct = action.payload;
-    // },  
+    // },
   },
   // pending: đang xử lý,
   // fullfiled: đã xử lý thành công
@@ -154,8 +154,6 @@ const ProductReducer = createSlice({
       getProductDetailApi.rejected,
       (state: ProductState, action) => {}
     );
-
-    
   },
 });
 
