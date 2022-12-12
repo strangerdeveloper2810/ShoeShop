@@ -2,18 +2,35 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../redux/configStore";
+import { ACCESS_TOKEN, settings, USER_LOGIN } from "../util/config";
 type Props = {};
 
 export default function Header(props: Props) {
   const { userLogin } = useSelector((state: RootState) => state.userReducer);
+  const handleLogout = ():void => {
+    // Log out
+    settings.eraseCookie(ACCESS_TOKEN);
+    settings.eraseCookie(USER_LOGIN);
+
+    settings.clearStorage(ACCESS_TOKEN);
+    settings.clearStorage(USER_LOGIN);
+
+    window.location.reload();
+  }
   const renderLoginUI = () => {
     if (userLogin) {
       return (
+        <>
         <div className="login flex-item">
           <NavLink to={"/profile"} className={"login-link"}>
             {userLogin.email}
           </NavLink>
         </div>
+
+        <div className="flex-item">
+          <span className="fw-bold logout-span" onClick={handleLogout}>Logout</span>
+        </div>
+        </>
       );
     }
     return (
