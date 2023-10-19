@@ -108,9 +108,9 @@ http.interceptors.response.use(
     },
     (error) => {
       // Xử lý lỗi khi nhận phản hồi
-      if (error.response?.status === 400 || error.response?.status === 404) {
-        window.location.href = "/";
-      }
+      // if (error.response?.status === 400 || error.response?.status === 404) {
+      //   alert(error.response.message)
+      // }
       if (error.response?.status === 401 || error.response?.status === 403) {
         window.location.href = "/login";
       }

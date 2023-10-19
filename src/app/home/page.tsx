@@ -33,7 +33,6 @@ const Home: React.FC = () => {
     // @ts-ignore
     return <span>Error: {error.message}</span>;
   }
-  console.log('items',data?.content?.items)
   const renderCardProduct = () => {
     return data?.content.map((card: Product) => (
       <Grid item key={card.id} xs={12} sm={6} md={4}>
