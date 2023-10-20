@@ -5,3 +5,8 @@ export interface UserRegister {
     gender: boolean,
     phone: string
 }
+
+export interface UserLogin {
+    email: string,
+    password: string,
+}
