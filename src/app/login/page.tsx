@@ -26,7 +26,6 @@ const Login: React.FC = () => {
 
     const mutation = useMutation((userData: UserLogin) => UserServices.userLogin(userData), {
         onSuccess: (data:any) => {
-            console.log(data);
             if (notificationRef.current) {
                 settings.setStorageJson(ACCESS_TOKEN, data.data.content.accessToken)
                 settings.setCookieJson(ACCESS_TOKEN, data.data.content.accessToken, 30);
