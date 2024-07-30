@@ -1,19 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import { AppBar, Box, Toolbar, Container, IconButton, Typography, Menu, MenuItem, Avatar, Button, Stack, Tooltip } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { settings, ACCESS_TOKEN } from "@/utils/setting"
 
@@ -28,66 +17,66 @@ const Header: React.FC = () => {
     null
   );
 
-  const renderHeaderRight = () => {
-    const accessTokenCookies = settings.getCookie(ACCESS_TOKEN);
-    if (accessTokenCookies) {
-      return (
-        <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://images.unsplash.com/photo-1691698139354-201a6b38da1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80"
-              />
-            </IconButton>
-          </Tooltip>
+  // const renderHeaderRight = () => {
+  //   const accessTokenCookies = settings.getCookie(ACCESS_TOKEN);
+  //   if (accessTokenCookies) {
+  //     return (
+  //       <Box sx={{ flexGrow: 0 }}>
+  //         <Tooltip title="Open settings">
+  //           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+  //             <Avatar
+  //               alt="Remy Sharp"
+  //               src="https://images.unsplash.com/photo-1691698139354-201a6b38da1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80"
+  //             />
+  //           </IconButton>
+  //         </Tooltip>
 
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {mainPages.map((item) => (
-              <MenuItem key={item} onClick={handleCloseUserMenu}>
-                <Link href={`/${item.toLocaleLowerCase()}`}>
-                  <Typography textAlign="center">{item}</Typography>
-                </Link>
-              </MenuItem>
-            ))}
-          </Menu>
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Button variant="contained" color="error" sx={{ mt: 1 }} onClick={() => {
-              settings.eraseCookie(ACCESS_TOKEN)
-              window.location.reload();
-            }}>Logout</Button>
-          </Box>
-        </Box>
-      )
-    }
-    else {
-      return (
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" color="success">
-            <Link href={"/login"} style={{ textDecoration: "none" }}>Login</Link>
-          </Button>
-          <Button variant="contained" color="warning">
-            <Link href={"/register"} style={{ textDecoration: "none" }}>Register</Link>
-          </Button>
-        </Stack>
-      )
-    }
-  }
+  //         <Menu
+  //           sx={{ mt: "45px" }}
+  //           id="menu-appbar"
+  //           anchorEl={anchorElUser}
+  //           anchorOrigin={{
+  //             vertical: "top",
+  //             horizontal: "right",
+  //           }}
+  //           keepMounted
+  //           transformOrigin={{
+  //             vertical: "top",
+  //             horizontal: "right",
+  //           }}
+  //           open={Boolean(anchorElUser)}
+  //           onClose={handleCloseUserMenu}
+  //         >
+  //           {mainPages.map((item) => (
+  //             <MenuItem key={item} onClick={handleCloseUserMenu}>
+  //               <Link href={`/${item.toLocaleLowerCase()}`}>
+  //                 <Typography textAlign="center">{item}</Typography>
+  //               </Link>
+  //             </MenuItem>
+  //           ))}
+  //         </Menu>
+  //         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+  //           <Button variant="contained" color="error" sx={{ mt: 1 }} onClick={() => {
+  //             settings.eraseCookie(ACCESS_TOKEN)
+  //             window.location.reload();
+  //           }}>Logout</Button>
+  //         </Box>
+  //       </Box>
+  //     )
+  //   }
+  //   else {
+  //     return (
+  //       <Stack direction="row" spacing={2}>
+  //         <Button variant="contained" color="success">
+  //           <Link href={"/login"} style={{ textDecoration: "none" }}>Login</Link>
+  //         </Button>
+  //         <Button variant="contained" color="warning">
+  //           <Link href={"/register"} style={{ textDecoration: "none" }}>Register</Link>
+  //         </Button>
+  //       </Stack>
+  //     )
+  //   }
+  // }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -195,7 +184,7 @@ const Header: React.FC = () => {
             ))}
           </Box>
 
-          {renderHeaderRight()}
+          {/* {renderHeaderRight()} */}
         </Toolbar>
       </Container>
     </AppBar>

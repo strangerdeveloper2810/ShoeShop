@@ -4,9 +4,8 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./globals.css";
-import Header from "@/Components/Header";
-import Footer from "@/Components/Footer";
 import TanstackProvider from "@/Components/Provider/TanstackProvider";
+import UserLayout from "@/layouts/UserLayout";
 
 export const metadata: Metadata = {
   title: "Shoe Shop",
@@ -21,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-       <TanstackProvider>
-           <Header />
-           {children}
-           <Footer />
-       </TanstackProvider>
+        <TanstackProvider>
+          <UserLayout>
+            {children}
+          </UserLayout>
+        </TanstackProvider>
       </body>
     </html>
   );
