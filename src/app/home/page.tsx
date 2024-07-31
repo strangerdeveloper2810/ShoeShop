@@ -1,40 +1,33 @@
 "use client";
+import _ from "lodash";
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { productServices } from "@/services/ProductServices";
 import { useQuery } from "@tanstack/react-query";
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Box, Typography, Container } from "@mui/material";
 import Loading from "@/Components/Loading";
 import { Product } from "@/types/Product";
-const defaultTheme = createTheme();
-
+import { httpForNextServer } from "@/utils/setting";
 const Home: React.FC = () => {
   // const pageIndex:number = 2;
   // const pageSize: number = 10;
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["products"],
     // queryFn: ()=> productServices.getProduct(pageIndex,pageSize ),
-    queryFn: ()=> productServices.getAllProduct()
+    queryFn: async () => await httpForNextServer.get("/api/product/getAllProduct"),
   });
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   if (isError) {
     // @ts-ignore
     return <span>Error: {error.message}</span>;
   }
+
+  const product = _.get(data, "data.data", []);
+
   const renderCardProduct = () => {
-    return data?.content.map((card: Product) => (
+    return _.map(product, (card: Product) => (
       <Grid item key={card.id} xs={12} sm={6} md={4}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <CardMedia
@@ -43,13 +36,13 @@ const Home: React.FC = () => {
               // 16:9
               pt: "56.25%",
             }}
-            image={card.image}
+            image={_.get(card, "image", "")}
           />
           <CardContent sx={{ flexGrow: 1 }}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {card.name}
+            <Typography gutterBottom variant="h5" component="p" sx={{ textTransform: "capitalize" }}>
+              {_.get(card, "name", "")}
             </Typography>
-            <Typography>{card.description}</Typography>
+            <Typography sx={{ textTransform: "capitalize" }}>{_.get(card, "description", "").substring(0, 100)}</Typography>
           </CardContent>
           <CardActions>
             <Button size="small" variant="outlined" color="primary">View</Button>
@@ -57,37 +50,25 @@ const Home: React.FC = () => {
           </CardActions>
         </Card>
       </Grid>
-    ));
+    ))
   };
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <main>
-        <Box
-          sx={{
-            bgcolor: "background.paper",
-            pt: 8,
-            pb: 6,
-          }}
+    <main>
+      <Container sx={{ py: 8 }} maxWidth="md">
+        <Typography
+          component="h1"
+          variant="h2"
+          align="center"
+          color="text.primary"
+          gutterBottom
         >
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-            >
-              Hot Shoe
-            </Typography>
-          </Container>
-        </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          <Grid container spacing={4}>
-             {renderCardProduct()}
-          </Grid>
-        </Container>
-      </main>
-    </ThemeProvider>
+          Hot Shoe
+        </Typography>
+        <Grid container spacing={4}>
+          {renderCardProduct()}
+        </Grid>
+      </Container>
+    </main>
   );
 };
 
