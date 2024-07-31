@@ -8,19 +8,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { validationSchema } from './validation/validation';
 import Notification from '@/Components/Snackbar';
 import { UserLogin } from '@/types/User';
-import { UserServices } from '@/services/UserServices';
 import { NotificationMethods } from "@/types/Notification";
-import { clientCookies } from "@/Helpers/clientCookies";
-import { ACCESS_TOKEN } from "@/utils/setting"
+import { httpForNextServer } from "@/utils/setting"
+import { useAppContext } from "../context/AppProvider";
 
 const Login: React.FC = () => {
   const notificationRef = React.useRef<NotificationMethods | null>(null);
-
-  const mutation = useMutation((userData: UserLogin) => UserServices.userLogin(userData), {
-    onSuccess: (data: any) => {
+  const { setAccessToken } = useAppContext();
+  const mutation = useMutation(async (userData: UserLogin) => await httpForNextServer.post("/api/auth/login", userData), {
+    onSuccess: async (data: any) => {
+      const accessToken = _.get(data, "data.accessToken", "");
       if (notificationRef.current) {
-        clientCookies.setCookie(ACCESS_TOKEN, _.get(data, "data.content.accessToken", ""), 30);
-        notificationRef.current.showNotification('Login Successfully', 'success');
+        setAccessToken(accessToken);
+        notificationRef.current.showNotification(_.get(data, "data.message", ""), 'success');
         window.location.href = "/home";
       }
     },

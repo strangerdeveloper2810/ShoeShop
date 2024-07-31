@@ -1,26 +1,29 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { useAppContext } from "@/app/context/AppProvider";
 import { AppBar, Box, Toolbar, Container, IconButton, Typography, Menu, MenuItem, Avatar, Button, Stack, Tooltip } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ACCESS_TOKEN } from "@/utils/setting";
-import { clientCookies } from "@/Helpers/clientCookies";
 
 const pages = ["Products", "Pricing", "Blog"];
 const mainPages = ["Profile", "Account", "Dashboard"];
 
 const Header: React.FC = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const { accessToken, setAccessToken } = useAppContext();
+
+  const handleLogout = () => {
+    setAccessToken("");
+    document.cookie = `${ACCESS_TOKEN}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+    window.location.href = "/";
+  };
 
   const renderHeaderRight = () => {
-    const accessTokenCookies = clientCookies.getCookie(ACCESS_TOKEN)
-    if (accessTokenCookies) {
+    if (accessToken) {
       return (
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
@@ -29,12 +32,11 @@ const Header: React.FC = () => {
                 alt="Remy Sharp"
                 src="https://images.unsplash.com/photo-1691698139354-201a6b38da1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80"
               />
-              <Button variant="contained" color="error" sx={{ mt: 0, ml: 2 }} onClick={() => {
-                clientCookies.eraseCookie(ACCESS_TOKEN)
-                window.location.reload();
-              }}>Logout</Button>
             </IconButton>
           </Tooltip>
+          <Button variant="contained" color="error" sx={{ mt: 0, ml: 2 }} onClick={handleLogout}>
+            Logout
+          </Button>
 
           <Menu
             sx={{ mt: "45px" }}
@@ -54,28 +56,27 @@ const Header: React.FC = () => {
           >
             {mainPages.map((item) => (
               <MenuItem key={item} onClick={handleCloseUserMenu}>
-                <Link href={`/${item.toLocaleLowerCase()}`}>
+                <Link href={`/${item.toLowerCase()}`}>
                   <Typography textAlign="center">{item}</Typography>
                 </Link>
               </MenuItem>
             ))}
           </Menu>
         </Box>
-      )
-    }
-    else {
+      );
+    } else {
       return (
         <Stack direction="row" spacing={2}>
           <Button variant="contained" color="success">
-            <Link href={"/login"} style={{ textDecoration: "none" }}>Login</Link>
+            <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>Login</Link>
           </Button>
           <Button variant="contained" color="warning">
-            <Link href={"/register"} style={{ textDecoration: "none" }}>Register</Link>
+            <Link href="/register" style={{ textDecoration: "none", color: "inherit" }}>Register</Link>
           </Button>
         </Stack>
-      )
+      );
     }
-  }
+  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -83,14 +84,13 @@ const Header: React.FC = () => {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -156,7 +156,7 @@ const Header: React.FC = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },

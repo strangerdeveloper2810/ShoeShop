@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -6,6 +7,8 @@ import "@fontsource/roboto/700.css";
 import "./globals.css";
 import TanstackProvider from "@/Components/Provider/TanstackProvider";
 import UserLayout from "@/layouts/UserLayout";
+import AppProvider from "./context/AppProvider";
+import { ACCESS_TOKEN } from "@/utils/setting";
 
 export const metadata: Metadata = {
   title: "Shoe Shop",
@@ -17,13 +20,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN)?.value ?? "";
+
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <TanstackProvider>
-          <UserLayout>
-            {children}
-          </UserLayout>
+          <AppProvider initialValue={accessToken}>
+            <UserLayout>
+              {children}
+            </UserLayout>
+          </AppProvider>
         </TanstackProvider>
       </body>
     </html>
