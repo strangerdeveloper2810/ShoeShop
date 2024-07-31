@@ -2,6 +2,7 @@
 import _ from "lodash";
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 import { useFormik } from 'formik';
 import Link from "next/link";
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container } from "@mui/material";
@@ -13,8 +14,8 @@ import { NotificationMethods } from "@/types/Notification";
 import { httpForNextServer } from "@/utils/setting";
 
 const Register: React.FC = () => {
+  const condition = useAuthRedirect();
   const notificationRef = React.useRef<NotificationMethods | null>(null);
-
   const mutation = useMutation(async (userData: UserRegister) => await httpForNextServer.post("/api/auth/register", userData), {
     onSuccess: (data) => {
       if (notificationRef.current) {

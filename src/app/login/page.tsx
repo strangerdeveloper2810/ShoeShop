@@ -3,6 +3,7 @@ import _ from "lodash"
 import * as React from 'react';
 import { useFormik } from 'formik';
 import { useMutation } from '@tanstack/react-query';
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 import { Avatar, Button, CssBaseline, TextField, Link, Paper, Box, Grid, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { validationSchema } from './validation/validation';
@@ -13,6 +14,7 @@ import { httpForNextServer } from "@/utils/setting"
 import { useAppContext } from "../context/AppProvider";
 
 const Login: React.FC = () => {
+  useAuthRedirect();
   const notificationRef = React.useRef<NotificationMethods | null>(null);
   const { setAccessToken } = useAppContext();
   const mutation = useMutation(async (userData: UserLogin) => await httpForNextServer.post("/api/auth/login", userData), {
