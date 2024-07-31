@@ -1,4 +1,5 @@
 "use client"
+import _ from "lodash";
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
@@ -8,17 +9,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { validationSchema } from './validation/validation';
 import Notification from '@/Components/Snackbar';
 import { UserRegister } from '@/types/User';
-import { UserServices } from '@/services/UserServices';
-
-import { NotificationMethods } from "@/types/Notification"
+import { NotificationMethods } from "@/types/Notification";
+import { httpForNextServer } from "@/utils/setting";
 
 const Register: React.FC = () => {
   const notificationRef = React.useRef<NotificationMethods | null>(null);
 
-  const mutation = useMutation((userData: UserRegister) => UserServices.userRegister(userData), {
-    onSuccess: () => {
+  const mutation = useMutation(async (userData: UserRegister) => await httpForNextServer.post("/api/auth/register", userData), {
+    onSuccess: (data) => {
       if (notificationRef.current) {
-        notificationRef.current.showNotification('Register Successfully', 'success');
+        notificationRef.current.showNotification(_.get(data, "data.message", ""), 'success');
       }
     },
     onError: (error: any) => {
