@@ -18,7 +18,8 @@ import { useMutation } from '@tanstack/react-query';
 import { UserLogin } from '@/types/User';
 import { UserServices } from '@/services/UserServices';
 import Notification from '@/Components/Snackbar';
-import { NotificationMethods } from "@/types/Notification"
+import { NotificationMethods } from "@/types/Notification";
+import { clientCookies } from "@/Helpers/clientCookies";
 import { ACCESS_TOKEN, settings } from "@/utils/setting"
 const defaultTheme = createTheme();
 
@@ -28,11 +29,10 @@ const Login: React.FC = () => {
   const mutation = useMutation((userData: UserLogin) => UserServices.userLogin(userData), {
     onSuccess: (data: any) => {
       if (notificationRef.current) {
-        // settings.setStorageJson(ACCESS_TOKEN, data.data.content.accessToken)
-        // settings.setCookieJson(ACCESS_TOKEN, data.data.content.accessToken, 30);
+        settings.setStorageJson(ACCESS_TOKEN, _.get(data, "data.content.accessToken", ""))
+        clientCookies.setCookie(ACCESS_TOKEN, _.get(data, "data.content.accessToken", ""), 30);
         notificationRef.current.showNotification('Login Successfully', 'success');
-        console.log({ data });
-        // window.location.href = "/home";
+        window.location.href = "/home";
       }
     },
     onError: (error: any) => {
