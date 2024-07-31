@@ -29,7 +29,6 @@ const Login: React.FC = () => {
   const mutation = useMutation((userData: UserLogin) => UserServices.userLogin(userData), {
     onSuccess: (data: any) => {
       if (notificationRef.current) {
-        settings.setStorageJson(ACCESS_TOKEN, _.get(data, "data.content.accessToken", ""))
         clientCookies.setCookie(ACCESS_TOKEN, _.get(data, "data.content.accessToken", ""), 30);
         notificationRef.current.showNotification('Login Successfully', 'success');
         window.location.href = "/home";
